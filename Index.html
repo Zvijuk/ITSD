@@ -1,148 +1,83 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>IT Service Desk Request</title>
-  <style>
-    :root { --w:720px }
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, sans-serif; 
-           max-width: var(--w); margin: 40px auto; padding: 0 16px; }
-    h1 { margin-bottom: 6px }
-    p.muted { color: #666; margin-top: 0 }
-    form { display: grid; gap: 12px; }
-    label { display: grid; gap: 6px; }
-    input, select, textarea, button {
-      font: inherit; padding: 10px 12px; border: 1px solid #cfcfcf; border-radius: 10px;
-    }
-    textarea { min-height: 160px; }
-    button { cursor: pointer }
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .help { font-size: 0.9em; color: #666; }
-    .ok { color: #0a7a0a; }
-    .err { color: #b00020; }
-    .hidden { display: none; }
-    .card { border: 1px dashed #ddd; border-radius: 12px; padding: 12px; background: #fafafa; }
-    @media (max-width: 640px) { .row { grid-template-columns: 1fr; } }
-  </style>
-</head>
-<body>
-  <h1>IT Service Desk Request</h1>
-  <p class="muted">Fill out the form – it will open an email to IT support, and Jira will automatically create a ticket.</p>
+<label for="email">Email</label>
+<input id="email" name="email" type="email" required maxlength="200" />
+</div>
+</div>
 
-  <form id="f">
-    <div class="row">
-      <label>Full Name
-        <input name="name" placeholder="Your full name" required />
-      </label>
-      <label>Contact Email
-        <input name="email" type="email" placeholder="your@email.com" required />
-      </label>
-    </div>
 
-    <label>Subject
-      <input name="summary" placeholder="Short issue summary" required />
-    </label>
+<div>
+<label for="summary">Subject</label>
+<input id="summary" name="summary" type="text" required maxlength="200" />
+</div>
 
-    <div class="row">
-      <label>Category
-        <select name="category">
-          <option value="Access / Accounts">Access / Accounts</option>
-          <option value="Network">Network</option>
-          <option value="Hardware">Hardware</option>
-          <option value="Software">Software</option>
-          <option value="Other">Other</option>
-        </select>
-      </label>
 
-      <label>Urgency
-        <select name="urgency">
-          <option value="Normal">Normal</option>
-          <option value="High">High</option>
-          <option value="Critical (work blocked)">Critical (work blocked)</option>
-        </select>
-      </label>
-    </div>
+<div>
+<label for="description">Describe the issue</label>
+<textarea id="description" name="description" rows="8" required></textarea>
+</div>
 
-    <label>Detailed Description
-      <textarea name="description" placeholder="Describe the issue, steps to reproduce, error messages, impact..." required></textarea>
-    </label>
 
-    <div class="help">After clicking "Send", your default email client will open. You can attach files before sending.</div>
+<!-- Honeypot anti‑spam field (keep hidden) -->
+<div class="hidden">
+<label for="company">Company</label>
+<input id="company" name="company" type="text" autocomplete="off" />
+</div>
 
-    <button type="submit">Send</button>
-    <div id="msg" class="help"></div>
 
-    <div id="fallback" class="card hidden">
-      <strong>Email didn’t open?</strong>
-      <div class="help">Copy and paste this manually:</div>
-      <div class="help"><code id="copyTo"></code></div>
-      <button type="button" id="copyBtn">Copy email content</button>
-    </div>
-  </form>
+<button type="submit">Send</button>
+<p id="status"></p>
+</form>
 
-  <script>
-    // Change this to your Jira Service Management project email address
-    const JSM_EMAIL = "support@coinis.atlassian.net"; 
 
-    const form = document.getElementById('f');
-    const msg = document.getElementById('msg');
-    const fallback = document.getElementById('fallback');
-    const copyTo = document.getElementById('copyTo');
-    const copyBtn = document.getElementById('copyBtn');
+<script>
+const API_ENDPOINT = "https://YOUR-WORKER.your-subdomain.workers.dev/create"; // set after backend deploy
 
-    function buildMailto(data) {
-      const subject = `[IT] ${data.summary}`.slice(0, 120);
 
-      const bodyLines = [
-        `Reported by: ${data.name || '-'} (${data.email || '-'})`,
-        `Category: ${data.category || '-'}`,
-        `Urgency: ${data.urgency || 'Normal'}`,
-        ``,
-        `Description:`,
-        `${data.description || '-'}`,
-        ``,
-        `---`,
-        `Note: sent via public IT request form.`
-      ];
+const form = document.getElementById('ticketForm');
+const statusEl = document.getElementById('status');
 
-      const body = encodeURIComponent(bodyLines.join('\n'));
-      const subj = encodeURIComponent(subject);
 
-      return `mailto:${encodeURIComponent(JSM_EMAIL)}?subject=${subj}&body=${body}`;
-    }
+form.addEventListener('submit', async (e) => {
+e.preventDefault();
+statusEl.textContent = '';
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      msg.textContent = 'Preparing email...';
 
-      const data = Object.fromEntries(new FormData(form).entries());
+const data = {
+name: form.name.value.trim(),
+email: form.email.value.trim(),
+summary: form.summary.value.trim(),
+description: form.description.value.trim(),
+honeypot: form.company.value.trim() // should stay empty
+};
 
-      if (!data.email || !data.summary || !data.description) {
-        msg.textContent = 'Missing required fields (email, subject, description).';
-        msg.className = 'help err';
-        return;
-      }
 
-      const mailto = buildMailto(data);
-      window.location.href = mailto;
+if (!data.name || !data.email || !data.summary || !data.description) {
+statusEl.textContent = 'Please fill in all required fields.';
+statusEl.className = 'err';
+return;
+}
 
-      fallback.classList.remove('hidden');
-      copyTo.textContent = decodeURIComponent(mailto);
-      msg.textContent = 'If the email client did not open, use the fallback below.';
-      msg.className = 'help';
-    });
 
-    copyBtn.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(copyTo.textContent);
-        msg.textContent = 'Email content copied to clipboard.';
-        msg.className = 'help ok';
-      } catch {
-        msg.textContent = 'Failed to copy. Select text manually.';
-        msg.className = 'help err';
-      }
-    });
-  </script>
+try {
+const res = await fetch(API_ENDPOINT, {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify(data)
+});
+const json = await res.json();
+if (res.ok) {
+statusEl.textContent = 'Request submitted. Thank you! Ticket key: ' + json.key;
+statusEl.className = 'ok';
+form.reset();
+} else {
+statusEl.textContent = json.error || 'Failed to submit. Please try again later.';
+statusEl.className = 'err';
+}
+} catch (err) {
+statusEl.textContent = 'Network error. Please try again later.';
+statusEl.className = 'err';
+}
+});
+</script>
 </body>
 </html>
