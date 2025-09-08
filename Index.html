@@ -90,15 +90,30 @@
         </div>
 
         <div class="row">
-          <div><label for="name">Your name</label><input id="name" name="name" type="text" autocomplete="name" required maxlength="120" /></div>
-          <div><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="200" /></div>
+          <div>
+            <label for="name">Your name</label>
+            <input id="name" name="name" type="text" autocomplete="name" required maxlength="120" />
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required maxlength="200" />
+          </div>
         </div>
 
-        <div><label for="summary">Subject</label><input id="summary" name="summary" type="text" required maxlength="200" /></div>
-        <div><label for="description">Describe the issue</label><textarea id="description" name="description" rows="8" required placeholder="What happened? What did you expect? Any steps to reproduce?"></textarea></div>
+        <div>
+          <label for="summary">Subject</label>
+          <input id="summary" name="summary" type="text" required maxlength="200" />
+        </div>
+        <div>
+          <label for="description">Describe the issue</label>
+          <textarea id="description" name="description" rows="8" required placeholder="What happened? What did you expect? Any steps to reproduce?"></textarea>
+        </div>
 
         <!-- Honeypot (leave empty) -->
-        <div class="hidden" aria-hidden="true"><label for="company">Company</label><input id="company" name="company" type="text" autocomplete="off" tabindex="-1" /></div>
+        <div class="hidden" aria-hidden="true">
+          <label for="company">Company</label>
+          <input id="company" name="company" type="text" autocomplete="off" tabindex="-1" />
+        </div>
 
         <div class="actions">
           <button id="submitBtn" type="submit">Send request</button>
@@ -130,7 +145,7 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault(); statusEl.textContent=''; statusEl.className='';
       const data = {
-        requestType: form.reqtype.value, // <— novo
+        requestType: form.reqtype.value,
         name: form.name.value.trim(),
         email: form.email.value.trim(),
         summary: form.summary.value.trim(),
