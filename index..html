@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Coinis | Submit a Request</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{ --brand:#1C74FF; --brand2:#2E8AFF; --navy:#0F1B2D;
+      --ink:#0F172A; --muted:#64748B; --border:#E2E8F0;
+      --bg:#F8FAFC; --card:#FFFFFF; --ok:#16A34A; --err:#B00020;
+      --radius:16px; --shadow:0 10px 30px rgba(2,12,27,.08);
+      --shadow-strong:0 20px 40px rgba(2,12,27,.12) }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{ margin:0; font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--ink);
+      background: radial-gradient(1200px 600px at 90% -10%, rgba(28,116,255,.10), transparent 60%),
+                 radial-gradient(800px 600px at -10% -20%, rgba(28,116,255,.12), transparent 60%),
+                 var(--bg) }
+    .nav{ display:flex; justify-content:center; align-items:center; gap:12px; padding:20px 16px;
+      position:sticky; top:0; z-index:10; background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.70));
+      border-bottom:1px solid rgba(226,232,240,.7); backdrop-filter:saturate(140%) blur(6px);
+      font-weight:700; color:var(--navy); letter-spacing:.2px }
+    .logo-badge{ width:34px; height:34px; border-radius:10px;
+      background:linear-gradient(135deg,var(--brand),#5AA3FF);
+      box-shadow:0 6px 18px rgba(28,116,255,.35) inset, 0 4px 10px rgba(28,116,255,.25) }
+    .hero{max-width:1000px; margin:40px auto 0; padding:0 16px; text-align:center}
+    .hero h1{font-size:clamp(28px,5vw,42px); line-height:1.1; margin:8px 0 10px}
+    .hero p{color:var(--muted); margin:0 auto 28px; max-width:720px}
+    .badges{display:flex; gap:10px; justify-content:center; flex-wrap:wrap}
+    .badge{font-size:12px; padding:6px 10px; border:1px solid var(--border); border-radius:999px; background:#fff; color:#334155}
+    .wrap{max-width:860px; margin:28px auto 80px; padding:0 16px}
+    .card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:24px}
+    @media (min-width:900px){ .card{display:grid; grid-template-columns:1.2fr 1fr; gap:28px; padding:32px} }
+    .left h2{margin:0 0 10px; font-size:22px}
+    .left p{margin:0 0 20px; color:var(--muted)}
+    .tips{border:1px dashed #D8E3F8; background:linear-gradient(180deg,#F7FBFF,#FFFFFF); padding:16px; border-radius:12px; color:#345; font-size:14px}
+    form{display:grid; gap:14px}
+    label{font-weight:600; font-size:14px}
+    .row{display:grid; gap:14px} @media (min-width:640px){ .row{grid-template-columns:1fr 1fr} }
+    input,select,textarea,button{
+      width:100%; font-size:16px; border-radius:12px; padding:12px 14px;
+      border:1px solid var(--border); background:#fff; color:var(--ink);
+      transition:border-color .15s ease, box-shadow .15s ease, transform .02s ease }
+    input:focus,select:focus,textarea:focus{outline:none; border-color:#9EC7FF; box-shadow:0 0 0 4px rgba(28,116,255,.12)}
+    textarea{min-height:160px; resize:vertical}
+    .actions{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+    button{ background:linear-gradient(180deg,var(--brand),var(--brand2)); color:#fff; border:none; font-weight:700; cursor:pointer; box-shadow:var(--shadow-strong) }
+    button:hover{transform:translateY(-1px)} button:active{transform:translateY(0)}
+    .btn-muted{background:#EEF4FF; color:#1e3a8a; box-shadow:none}
+    small.help{color:var(--muted)} .hidden{display:none !important}
+    #status{font-weight:600} .ok{color:var(--ok)} .err{color:var(--err)}
+    .footer{max-width:1000px; margin:0 auto 40px; padding:0 16px; color:var(--muted); text-align:center}
+  </style>
+</head>
+<body>
+  <div class="nav"><span class="logo-badge" aria-hidden="true"></span><span>COINIS</span></div>
+
+  <section class="hero" role="banner">
+    <h1>Submit a Request</h1>
+    <p>No login. Just your contact email and details about the issue. A ticket will be created and our team will reach out.</p>
+    <div class="badges"><div class="badge">Secure</div><div class="badge">Fast</div><div class="badge">No Account Needed</div></div>
+  </section>
+
+  <div class="wrap">
+    <div class="card">
+      <div class="left">
+        <h2>Tell us what you need</h2>
+        <p>We usually respond the same business day. Please be as specific as possible.</p>
+        <div class="tips"><strong>Tip:</strong> Include steps to reproduce, screenshots/links if relevant, and any error messages you see.</div>
+      </div>
+
+      <form id="ticketForm" novalidate aria-label="Submit a support request">
+        <div>
+          <label for="reqtype">What can we help you with?</label>
+          <select id="reqtype" name="reqtype" required>
+            <option value="technical_support" selected>Technical support</option>
+            <option value="get_dev_support">Get developer support</option>
+            <option value="licensing_billing">Licensing and billing questions</option>
+            <option value="product_trial">Product trial questions</option>
+            <option value="other">Other questions</option>
+            <option value="report_bug">Report a bug</option>
+            <option value="suggest_new_feature">Suggest a new feature</option>
+            <option value="suggest_improvement">Suggest improvement</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <div><label for="name">Your name</label><input id="name" name="name" type="text" autocomplete="name" required maxlength="120" /></div>
+          <div><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="200" /></div>
+        </div>
+
+        <div><label for="summary">Subject</label><input id="summary" name="summary" type="text" required maxlength="200" /></div>
+        <div><label for="description">Describe the issue</label><textarea id="description" name="description" rows="8" required placeholder="What happened? What did you expect? Any steps to reproduce?"></textarea></div>
+
+        <!-- Honeypot (leave empty) -->
+        <div class="hidden" aria-hidden="true"><label for="company">Company</label><input id="company" name="company" type="text" autocomplete="off" tabindex="-1" /></div>
+
+        <div class="actions">
+          <button id="submitBtn" type="submit">Send request</button>
+          <button id="resetBtn" type="button" class="btn-muted">Reset</button>
+          <small class="help">By submitting, you agree we may contact you about this request.</small>
+        </div>
+
+        <p id="status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer"><p>© <span id="year"></span> Coinis LTD — All rights reserved.</p></footer>
+
+  <script>
+    const API_ENDPOINT = "https://workerjira.dalibor-912.workers.dev/create";
+
+    const form = document.getElementById('ticketForm');
+    const statusEl = document.getElementById('status');
+    const submitBtn = document.getElementById('submitBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    resetBtn.addEventListener('click', () => { form.reset(); statusEl.textContent=''; statusEl.className=''; });
+
+    function setLoading(b){ submitBtn.disabled=b; submitBtn.textContent=b?'Sending…':'Send request'; }
+    const validEmail = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault(); statusEl.textContent=''; statusEl.className='';
+      const data = {
+        requestType: form.reqtype.value, // <— novo
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        summary: form.summary.value.trim(),
+        description: form.description.value.trim(),
+        honeypot: form.company.value.trim()
+      };
+      if (!data.requestType || !data.name || !data.email || !data.summary || !data.description) {
+        statusEl.textContent = 'Please fill in all required fields.'; statusEl.className='err'; return;
+      }
+      if (!validEmail(data.email)) { statusEl.textContent='Please enter a valid email address.'; statusEl.className='err'; return; }
+
+      try {
+        setLoading(true);
+        const res = await fetch(API_ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
+        const txt = await res.text(); let json={}; try{ json=JSON.parse(txt) }catch{}
+        if (res.ok) { statusEl.innerHTML = 'Request submitted. Thank you!<br><strong>Ticket:</strong> '+(json.key||'(created)'); statusEl.className='ok'; form.reset(); }
+        else { const msg = json.error || json.message || txt || 'Submission failed.'; statusEl.textContent = typeof msg==='string'?msg:JSON.stringify(msg); statusEl.className='err'; }
+      } catch {
+        statusEl.textContent = 'Network error. Please try again.'; statusEl.className='err';
+      } finally { setLoading(false); }
+    });
+  </script>
+</body>
+</html>
