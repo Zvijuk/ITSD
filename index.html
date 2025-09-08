@@ -5,140 +5,92 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Coinis | Submit a Request</title>
 
-  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      /* Coinis-ish palette */
-      --brand: #1C74FF;        /* primary blue */
-      --brand-dark:#0F1B2D;    /* deep navy */
-      --ink: #0F172A;          /* heading/body */
-      --muted:#64748B;         /* secondary text */
-      --border:#E2E8F0;        /* strokes */
-      --bg:#F8FAFC;            /* page bg */
-      --card:#FFFFFF;          /* card bg */
-      --ok:#16A34A;
-      --err:#B00020;
-      --radius: 16px;
-      --shadow: 0 10px 30px rgba(2, 12, 27, .08);
-      --shadow-strong: 0 20px 40px rgba(2, 12, 27, .12);
+      --brand:#1C74FF; --brand2:#2E8AFF; --navy:#0F1B2D;
+      --ink:#0F172A; --muted:#64748B; --border:#E2E8F0;
+      --bg:#F8FAFC; --card:#FFFFFF; --ok:#16A34A; --err:#B00020;
+      --radius:16px; --shadow:0 10px 30px rgba(2,12,27,.08);
+      --shadow-strong:0 20px 40px rgba(2,12,27,.12);
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0;
-      font-family:Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      margin:0; font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       color:var(--ink);
       background:
         radial-gradient(1200px 600px at 90% -10%, rgba(28,116,255,.10), transparent 60%),
         radial-gradient(800px 600px at -10% -20%, rgba(28,116,255,.12), transparent 60%),
         var(--bg);
     }
-    a{color:var(--brand);text-decoration:none}
-    a:hover{text-decoration:underline}
-
-    /* Header */
     .nav{
-      display:flex; align-items:center; justify-content:center;
-      padding:20px 16px;
-      position:sticky; top:0; backdrop-filter:saturate(140%) blur(6px);
+      display:flex; justify-content:center; align-items:center; gap:12px;
+      padding:20px 16px; position:sticky; top:0; z-index:10;
       background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.70));
-      border-bottom:1px solid rgba(226,232,240,.7);
-      z-index:10;
-    }
-    .logo{
-      display:flex; gap:12px; align-items:center; font-weight:700; letter-spacing:.2px;
-      color:var(--brand-dark);
+      border-bottom:1px solid rgba(226,232,240,.7); backdrop-filter:saturate(140%) blur(6px);
+      font-weight:700; color:var(--navy); letter-spacing:.2px;
     }
     .logo-badge{
-      width:34px;height:34px;border-radius:10px;
-      background:linear-gradient(135deg, var(--brand), #5AA3FF);
-      box-shadow: 0 6px 18px rgba(28,116,255,.35) inset, 0 4px 10px rgba(28,116,255,.25);
+      width:34px; height:34px; border-radius:10px;
+      background:linear-gradient(135deg,var(--brand),#5AA3FF);
+      box-shadow:0 6px 18px rgba(28,116,255,.35) inset, 0 4px 10px rgba(28,116,255,.25);
     }
-
-    /* Hero */
-    .hero{
-      max-width:1000px; margin:40px auto 0; padding:0 16px; text-align:center;
-    }
-    .hero h1{font-size:clamp(28px, 5vw, 42px); line-height:1.1; margin:8px 0 10px}
+    .hero{max-width:1000px; margin:40px auto 0; padding:0 16px; text-align:center}
+    .hero h1{font-size:clamp(28px,5vw,42px); line-height:1.1; margin:8px 0 10px}
     .hero p{color:var(--muted); margin:0 auto 28px; max-width:720px}
     .badges{display:flex; gap:10px; justify-content:center; flex-wrap:wrap}
-    .badge{
-      font-size:12px; padding:6px 10px; border:1px solid var(--border);
-      border-radius:999px; background:#fff; color:#334155;
-    }
+    .badge{font-size:12px; padding:6px 10px; border:1px solid var(--border); border-radius:999px; background:#fff; color:#334155}
 
-    /* Card / Form */
     .wrap{max-width:860px; margin:28px auto 80px; padding:0 16px}
-    .card{
-      background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
-      box-shadow:var(--shadow); padding:24px; overflow:hidden;
-    }
-    @media (min-width:900px){
-      .card{display:grid; grid-template-columns: 1.2fr 1fr; gap:28px; padding:32px}
-    }
+    .card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:24px}
+    @media (min-width:900px){ .card{display:grid; grid-template-columns:1.2fr 1fr; gap:28px; padding:32px} }
+
     .left h2{margin:0 0 10px; font-size:22px}
     .left p{margin:0 0 20px; color:var(--muted)}
-    .tips{
-      border:1px dashed #D8E3F8; background:linear-gradient(180deg,#F7FBFF, #FFFFFF);
-      padding:16px; border-radius:12px; color:#345; font-size:14px
-    }
+    .tips{border:1px dashed #D8E3F8; background:linear-gradient(180deg,#F7FBFF,#FFFFFF); padding:16px; border-radius:12px; color:#345; font-size:14px}
+
     form{display:grid; gap:14px}
     label{font-weight:600; font-size:14px}
     .row{display:grid; gap:14px}
     @media (min-width:640px){ .row{grid-template-columns:1fr 1fr} }
-    input, textarea, button{
+    input,textarea,button{
       width:100%; font-size:16px; border-radius:12px; padding:12px 14px;
       border:1px solid var(--border); background:#fff; color:var(--ink);
       transition:border-color .15s ease, box-shadow .15s ease, transform .02s ease;
     }
-    input:focus, textarea:focus{
-      outline:none; border-color:#9EC7FF; box-shadow:0 0 0 4px rgba(28,116,255,.12)
-    }
+    input:focus,textarea:focus{outline:none; border-color:#9EC7FF; box-shadow:0 0 0 4px rgba(28,116,255,.12)}
     textarea{min-height:160px; resize:vertical}
     .actions{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
     button{
-      background:linear-gradient(180deg, var(--brand), #2E8AFF);
-      color:#fff; border:none; font-weight:700; cursor:pointer;
+      background:linear-gradient(180deg,var(--brand),var(--brand2)); color:#fff; border:none; font-weight:700; cursor:pointer;
       box-shadow:var(--shadow-strong);
     }
-    button:hover{transform:translateY(-1px)}
-    button:active{transform:translateY(0)}
+    button:hover{transform:translateY(-1px)} button:active{transform:translateY(0)}
     .btn-muted{background:#EEF4FF; color:#1e3a8a; box-shadow:none}
     small.help{color:var(--muted)}
     .hidden{display:none !important}
     #status{font-weight:600}
-    .ok{color:var(--ok)}
-    .err{color:var(--err)}
-
-    /* Footer */
-    .footer{
-      max-width:1000px; margin:0 auto 40px; padding:0 16px; color:var(--muted); text-align:center;
-    }
+    .ok{color:var(--ok)} .err{color:var(--err)}
+    .footer{max-width:1000px; margin:0 auto 40px; padding:0 16px; color:var(--muted); text-align:center}
   </style>
 </head>
 <body>
-  <!-- Nav -->
   <div class="nav">
-    <div class="logo" aria-label="Coinis">
-      <span class="logo-badge" aria-hidden="true"></span>
-      <span>COINIS</span>
-    </div>
+    <span class="logo-badge" aria-hidden="true"></span><span>COINIS</span>
   </div>
 
-  <!-- Hero -->
   <section class="hero" role="banner">
     <h1>Submit a Request</h1>
     <p>No login. Just your contact email and details about the issue. A ticket will be created and our team will reach out.</p>
     <div class="badges">
-      <div class="badge">Secure</div>
-      <div class="badge">Fast</div>
-      <div class="badge">No Account Needed</div>
+      <div class="badge">Secure</div><div class="badge">Fast</div><div class="badge">No Account Needed</div>
     </div>
   </section>
 
-  <!-- Card -->
   <div class="wrap">
     <div class="card">
       <div class="left">
@@ -194,7 +146,7 @@
 
   <script>
     // ===== CONFIG =====
-    const API_ENDPOINT = "https://workerjira.dalibor-912.workers.dev/create";  // ← replace with your Worker URL
+    const API_ENDPOINT = "https://workerjira.dalibor-912.workers.dev/create"; // Cloudflare Worker endpoint
 
     // ===== UI =====
     const form = document.getElementById('ticketForm');
@@ -213,10 +165,7 @@
       submitBtn.disabled = loading;
       submitBtn.textContent = loading ? 'Sending…' : 'Send request';
     }
-
-    function validEmail(email){
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
+    function validEmail(email){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
 
     // ===== Submit =====
     form.addEventListener('submit', async (e) => {
@@ -229,37 +178,39 @@
         email: form.email.value.trim(),
         summary: form.summary.value.trim(),
         description: form.description.value.trim(),
-        honeypot: form.company.value.trim() // should be empty
+        honeypot: form.company.value.trim() // must be empty
       };
 
       // Frontend validation
       if (!data.name || !data.email || !data.summary || !data.description) {
         statusEl.textContent = 'Please fill in all required fields.';
-        statusEl.className = 'err';
-        return;
+        statusEl.className = 'err'; return;
       }
       if (!validEmail(data.email)) {
         statusEl.textContent = 'Please enter a valid email address.';
-        statusEl.className = 'err';
-        return;
+        statusEl.className = 'err'; return;
       }
 
       try {
         setLoading(true);
+        console.log('POST to:', API_ENDPOINT, data);
         const res = await fetch(API_ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
 
-        const json = await res.json().catch(() => ({}));
+        // Try to parse JSON; if fail, show raw text
+        const text = await res.text();
+        let json = {};
+        try { json = JSON.parse(text); } catch {}
 
         if (res.ok) {
           statusEl.innerHTML = 'Request submitted. Thank you!<br><strong>Ticket:</strong> ' + (json.key || '(created)');
           statusEl.className = 'ok';
           form.reset();
         } else {
-          const msg = (json && (json.error || json.message)) || 'Submission failed. Please try again later.';
+          const msg = (json && (json.error || json.message)) || text || 'Submission failed. Please try again later.';
           statusEl.textContent = typeof msg === 'string' ? msg : JSON.stringify(msg);
           statusEl.className = 'err';
         }
