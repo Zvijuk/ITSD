@@ -1,83 +1,275 @@
 <!doctype html>
-<label for="email">Email</label>
-<input id="email" name="email" type="email" required maxlength="200" />
-</div>
-</div>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Coinis | Submit a Request</title>
 
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<div>
-<label for="summary">Subject</label>
-<input id="summary" name="summary" type="text" required maxlength="200" />
-</div>
+  <style>
+    :root{
+      /* Coinis-ish palette */
+      --brand: #1C74FF;        /* primary blue */
+      --brand-dark:#0F1B2D;    /* deep navy */
+      --ink: #0F172A;          /* heading/body */
+      --muted:#64748B;         /* secondary text */
+      --border:#E2E8F0;        /* strokes */
+      --bg:#F8FAFC;            /* page bg */
+      --card:#FFFFFF;          /* card bg */
+      --ok:#16A34A;
+      --err:#B00020;
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(2, 12, 27, .08);
+      --shadow-strong: 0 20px 40px rgba(2, 12, 27, .12);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 600px at 90% -10%, rgba(28,116,255,.10), transparent 60%),
+        radial-gradient(800px 600px at -10% -20%, rgba(28,116,255,.12), transparent 60%),
+        var(--bg);
+    }
+    a{color:var(--brand);text-decoration:none}
+    a:hover{text-decoration:underline}
 
+    /* Header */
+    .nav{
+      display:flex; align-items:center; justify-content:center;
+      padding:20px 16px;
+      position:sticky; top:0; backdrop-filter:saturate(140%) blur(6px);
+      background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.70));
+      border-bottom:1px solid rgba(226,232,240,.7);
+      z-index:10;
+    }
+    .logo{
+      display:flex; gap:12px; align-items:center; font-weight:700; letter-spacing:.2px;
+      color:var(--brand-dark);
+    }
+    .logo-badge{
+      width:34px;height:34px;border-radius:10px;
+      background:linear-gradient(135deg, var(--brand), #5AA3FF);
+      box-shadow: 0 6px 18px rgba(28,116,255,.35) inset, 0 4px 10px rgba(28,116,255,.25);
+    }
 
-<div>
-<label for="description">Describe the issue</label>
-<textarea id="description" name="description" rows="8" required></textarea>
-</div>
+    /* Hero */
+    .hero{
+      max-width:1000px; margin:40px auto 0; padding:0 16px; text-align:center;
+    }
+    .hero h1{font-size:clamp(28px, 5vw, 42px); line-height:1.1; margin:8px 0 10px}
+    .hero p{color:var(--muted); margin:0 auto 28px; max-width:720px}
+    .badges{display:flex; gap:10px; justify-content:center; flex-wrap:wrap}
+    .badge{
+      font-size:12px; padding:6px 10px; border:1px solid var(--border);
+      border-radius:999px; background:#fff; color:#334155;
+    }
 
+    /* Card / Form */
+    .wrap{max-width:860px; margin:28px auto 80px; padding:0 16px}
+    .card{
+      background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+      box-shadow:var(--shadow); padding:24px; overflow:hidden;
+    }
+    @media (min-width:900px){
+      .card{display:grid; grid-template-columns: 1.2fr 1fr; gap:28px; padding:32px}
+    }
+    .left h2{margin:0 0 10px; font-size:22px}
+    .left p{margin:0 0 20px; color:var(--muted)}
+    .tips{
+      border:1px dashed #D8E3F8; background:linear-gradient(180deg,#F7FBFF, #FFFFFF);
+      padding:16px; border-radius:12px; color:#345; font-size:14px
+    }
+    form{display:grid; gap:14px}
+    label{font-weight:600; font-size:14px}
+    .row{display:grid; gap:14px}
+    @media (min-width:640px){ .row{grid-template-columns:1fr 1fr} }
+    input, textarea, button{
+      width:100%; font-size:16px; border-radius:12px; padding:12px 14px;
+      border:1px solid var(--border); background:#fff; color:var(--ink);
+      transition:border-color .15s ease, box-shadow .15s ease, transform .02s ease;
+    }
+    input:focus, textarea:focus{
+      outline:none; border-color:#9EC7FF; box-shadow:0 0 0 4px rgba(28,116,255,.12)
+    }
+    textarea{min-height:160px; resize:vertical}
+    .actions{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+    button{
+      background:linear-gradient(180deg, var(--brand), #2E8AFF);
+      color:#fff; border:none; font-weight:700; cursor:pointer;
+      box-shadow:var(--shadow-strong);
+    }
+    button:hover{transform:translateY(-1px)}
+    button:active{transform:translateY(0)}
+    .btn-muted{background:#EEF4FF; color:#1e3a8a; box-shadow:none}
+    small.help{color:var(--muted)}
+    .hidden{display:none !important}
+    #status{font-weight:600}
+    .ok{color:var(--ok)}
+    .err{color:var(--err)}
 
-<!-- Honeypot anti‑spam field (keep hidden) -->
-<div class="hidden">
-<label for="company">Company</label>
-<input id="company" name="company" type="text" autocomplete="off" />
-</div>
+    /* Footer */
+    .footer{
+      max-width:1000px; margin:0 auto 40px; padding:0 16px; color:var(--muted); text-align:center;
+    }
+  </style>
+</head>
+<body>
+  <!-- Nav -->
+  <div class="nav">
+    <div class="logo" aria-label="Coinis">
+      <span class="logo-badge" aria-hidden="true"></span>
+      <span>COINIS</span>
+    </div>
+  </div>
 
+  <!-- Hero -->
+  <section class="hero" role="banner">
+    <h1>Submit a Request</h1>
+    <p>No login. Just your contact email and details about the issue. A ticket will be created and our team will reach out.</p>
+    <div class="badges">
+      <div class="badge">Secure</div>
+      <div class="badge">Fast</div>
+      <div class="badge">No Account Needed</div>
+    </div>
+  </section>
 
-<button type="submit">Send</button>
-<p id="status"></p>
-</form>
+  <!-- Card -->
+  <div class="wrap">
+    <div class="card">
+      <div class="left">
+        <h2>Tell us what you need</h2>
+        <p>We usually respond the same business day. Please be as specific as possible.</p>
+        <div class="tips">
+          <strong>Tip:</strong> Include steps to reproduce, screenshots/links if relevant, and any error messages you see.
+        </div>
+      </div>
 
+      <form id="ticketForm" novalidate aria-label="Submit a support request">
+        <div class="row">
+          <div>
+            <label for="name">Your name</label>
+            <input id="name" name="name" type="text" autocomplete="name" required maxlength="120" />
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required maxlength="200" />
+          </div>
+        </div>
 
-<script>
-const API_ENDPOINT = "https://YOUR-WORKER.your-subdomain.workers.dev/create"; // set after backend deploy
+        <div>
+          <label for="summary">Subject</label>
+          <input id="summary" name="summary" type="text" required maxlength="200" />
+        </div>
 
+        <div>
+          <label for="description">Describe the issue</label>
+          <textarea id="description" name="description" rows="8" required placeholder="What happened? What did you expect? Any steps to reproduce?"></textarea>
+        </div>
 
-const form = document.getElementById('ticketForm');
-const statusEl = document.getElementById('status');
+        <!-- Honeypot (leave empty) -->
+        <div class="hidden" aria-hidden="true">
+          <label for="company">Company</label>
+          <input id="company" name="company" type="text" autocomplete="off" tabindex="-1" />
+        </div>
 
+        <div class="actions">
+          <button id="submitBtn" type="submit">Send request</button>
+          <button id="resetBtn" type="button" class="btn-muted">Reset</button>
+          <small class="help">By submitting, you agree we may contact you about this request.</small>
+        </div>
 
-form.addEventListener('submit', async (e) => {
-e.preventDefault();
-statusEl.textContent = '';
+        <p id="status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
 
+  <footer class="footer">
+    <p>© <span id="year"></span> Coinis LTD — All rights reserved.</p>
+  </footer>
 
-const data = {
-name: form.name.value.trim(),
-email: form.email.value.trim(),
-summary: form.summary.value.trim(),
-description: form.description.value.trim(),
-honeypot: form.company.value.trim() // should stay empty
-};
+  <script>
+    // ===== CONFIG =====
+    const API_ENDPOINT = "https://workerjira.dalibor-912.workers.dev"; // ← replace with your Worker URL
 
+    // ===== UI =====
+    const form = document.getElementById('ticketForm');
+    const statusEl = document.getElementById('status');
+    const submitBtn = document.getElementById('submitBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-if (!data.name || !data.email || !data.summary || !data.description) {
-statusEl.textContent = 'Please fill in all required fields.';
-statusEl.className = 'err';
-return;
-}
+    resetBtn.addEventListener('click', () => {
+      form.reset();
+      statusEl.textContent = '';
+      statusEl.className = '';
+    });
 
+    function setLoading(loading){
+      submitBtn.disabled = loading;
+      submitBtn.textContent = loading ? 'Sending…' : 'Send request';
+    }
 
-try {
-const res = await fetch(API_ENDPOINT, {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify(data)
-});
-const json = await res.json();
-if (res.ok) {
-statusEl.textContent = 'Request submitted. Thank you! Ticket key: ' + json.key;
-statusEl.className = 'ok';
-form.reset();
-} else {
-statusEl.textContent = json.error || 'Failed to submit. Please try again later.';
-statusEl.className = 'err';
-}
-} catch (err) {
-statusEl.textContent = 'Network error. Please try again later.';
-statusEl.className = 'err';
-}
-});
-</script>
+    function validEmail(email){
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    // ===== Submit =====
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      statusEl.textContent = '';
+      statusEl.className = '';
+
+      const data = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        summary: form.summary.value.trim(),
+        description: form.description.value.trim(),
+        honeypot: form.company.value.trim() // should be empty
+      };
+
+      // Frontend validation
+      if (!data.name || !data.email || !data.summary || !data.description) {
+        statusEl.textContent = 'Please fill in all required fields.';
+        statusEl.className = 'err';
+        return;
+      }
+      if (!validEmail(data.email)) {
+        statusEl.textContent = 'Please enter a valid email address.';
+        statusEl.className = 'err';
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const json = await res.json().catch(() => ({}));
+
+        if (res.ok) {
+          statusEl.innerHTML = 'Request submitted. Thank you!<br><strong>Ticket:</strong> ' + (json.key || '(created)');
+          statusEl.className = 'ok';
+          form.reset();
+        } else {
+          const msg = (json && (json.error || json.message)) || 'Submission failed. Please try again later.';
+          statusEl.textContent = typeof msg === 'string' ? msg : JSON.stringify(msg);
+          statusEl.className = 'err';
+        }
+      } catch (err) {
+        statusEl.textContent = 'Network error. Please try again.';
+        statusEl.className = 'err';
+      } finally {
+        setLoading(false);
+      }
+    });
+  </script>
 </body>
 </html>
